@@ -117,12 +117,12 @@ export default function LandingPage() {
           ))}
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+          <Link href="/login" style={{ textDecoration: 'none' }}>
             <button style={{ padding: '8px 20px', borderRadius: '8px', background: 'transparent', border: '1px solid rgba(99,102,241,0.4)', color: '#818CF8', fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}>
               Sign In
             </button>
           </Link>
-          <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+          <Link href="/login" style={{ textDecoration: 'none' }}>
             <button style={{ padding: '8px 20px', borderRadius: '8px', background: 'linear-gradient(135deg, #6366F1, #4F46E5)', color: 'white', fontSize: '14px', fontWeight: '600', cursor: 'pointer', border: 'none', boxShadow: '0 4px 15px rgba(99,102,241,0.4)' }}>
               Get Started Free
             </button>
@@ -202,7 +202,7 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center', position: 'relative', zIndex: 1, flexWrap: 'wrap', justifyContent: 'center', marginBottom: '60px' }}>
-          <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+          <Link href="/login" style={{ textDecoration: 'none' }}>
             <button style={{
               padding: '16px 36px', borderRadius: '14px',
               background: 'linear-gradient(135deg, #6366F1, #4F46E5)',
@@ -211,7 +211,7 @@ export default function LandingPage() {
               boxShadow: '0 8px 30px rgba(99,102,241,0.5)',
               display: 'flex', alignItems: 'center', gap: '8px',
             }}>
-              Launch Dashboard <ArrowRight size={18} />
+              Enroll & Launch Dashboard <ArrowRight size={18} />
             </button>
           </Link>
           <Link href="/copilot" style={{ textDecoration: 'none' }}>
@@ -390,7 +390,7 @@ export default function LandingPage() {
           <p style={{ fontSize: '18px', color: '#64748B', marginBottom: '40px', maxWidth: '500px', margin: '0 auto 40px' }}>
             Join 1,200+ students already using Optra to find and land niche opportunities faster.
           </p>
-          <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+          <Link href="/login" style={{ textDecoration: 'none' }}>
             <button style={{
               padding: '18px 48px', borderRadius: '14px',
               background: 'linear-gradient(135deg, #6366F1, #4F46E5)',

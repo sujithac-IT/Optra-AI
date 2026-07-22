@@ -5,7 +5,7 @@ import { mockStudentProfile, mockOpportunities, mockScoutActivity } from '@/lib/
 import {
   TrendingUp, Clock, CheckCircle2, ArrowRight,
   Target, AlertCircle, ChevronRight, Briefcase,
-  Upload, RefreshCw, FileText, Award,
+  Upload, RefreshCw, FileText, Award, Sparkles,
   PlayCircle, ExternalLink, Video, BookOpen
 } from 'lucide-react';
 import { LinkedInIcon, WhatsAppIcon, UnstopIcon, FaceScanIcon } from '@/components/Icons';

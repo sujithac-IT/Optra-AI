@@ -152,17 +152,33 @@ export default function LoginPage() {
   };
 
   const handleLoginSubmit = () => {
-    // Demo: accept any credentials, or check localStorage
-    const stored = localStorage.getItem('optra_user_session');
-    if (stored) {
-      const user = JSON.parse(stored);
-      if (user.email === loginEmail) {
-        router.push('/dashboard');
-        speakFemale(`Welcome back ${user.name}! You are now logged in.`, lang);
-        return;
-      }
+    if (!loginEmail.trim()) {
+      setLoginError('Please enter your email address');
+      return;
     }
-    setLoginError('Account not found. Please sign up first.');
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('optra_user_session') : null;
+    let userToLogin = {
+      name: loginEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Tech Talent',
+      email: loginEmail.trim(),
+      phone: '+91 98765 43210',
+      college: 'VIT Vellore',
+      year: '3rd Year',
+      skills: ['React', 'Python', 'Node.js', 'FastAPI'],
+      certificates: [],
+      language: lang,
+      optraScore: 782,
+    };
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed.email === loginEmail.trim()) {
+          userToLogin = parsed;
+        }
+      } catch (err) {}
+    }
+    login(userToLogin);
+    speakFemale(`Welcome back ${userToLogin.name}! You are now logged in.`, lang);
+    router.push('/dashboard');
   };
 
   const nextStep = () => {
@@ -473,13 +489,20 @@ export default function LoginPage() {
                 Welcome, {name.split(' ')[0]}!
               </div>
               <div style={{ fontSize: '14px', color: '#64748B', lineHeight: '1.6', marginBottom: '20px' }}>
-                Your Optra profile is ready. Redirecting to your personalized dashboard...
+                Your Optra profile is ready! Redirecting to your personalized dashboard...
               </div>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '6px' }}>
-                {[0, 1, 2].map(i => (
-                  <div key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#1A73E8', animation: `pulseGlow 1.2s ease-in-out ${i * 0.3}s infinite` }} />
-                ))}
-              </div>
+              <button
+                onClick={() => router.push('/dashboard')}
+                style={{
+                  width: '100%', padding: '14px', borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #1A73E8, #34A853)',
+                  color: 'white', border: 'none', fontSize: '15px', fontWeight: '700',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  boxShadow: '0 4px 16px rgba(26,115,232,0.3)',
+                }}
+              >
+                Go to Dashboard Now <ArrowRight size={18} />
+              </button>
             </div>
           )}
         </div>
