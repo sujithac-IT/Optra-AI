@@ -6,7 +6,9 @@ import {
   Trophy, Globe, Link2, Zap, Star, Shield, ExternalLink, Eye,
   Mail, Phone, GraduationCap, Award, UserCheck
 } from 'lucide-react';
-import { useUser, getInitials } from '@/context/AuthContext';
+import { useUser } from '@/context/AuthContext';
+import { getInitials } from '@/lib/utils';
+
 
 const qrTypes = [
   {

@@ -6,7 +6,9 @@ import {
   QrCode, Briefcase, ChevronRight, Bell, Settings, LogOut
 } from 'lucide-react';
 import { FaceScanIcon } from '@/components/Icons';
-import { useUser, getInitials } from '@/context/AuthContext';
+import { useUser } from '@/context/AuthContext';
+import { getInitials } from '@/lib/utils';
+
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
