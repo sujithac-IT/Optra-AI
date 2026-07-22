@@ -307,15 +307,6 @@ export default function LoginPage() {
             </>
           )}
         </div>
-                {step === 2 && 'Validate Your Skills'}
-                {step === 3 && 'Upload Certificates'}
-                {step === 4 && 'Profile Ready!'}
-              </div>
-            </>
-          ) : (
-            <div style={{ fontSize: '22px', fontWeight: '700' }}>Welcome back</div>
-          )}
-        </div>
 
         {/* Form Body */}
         <div style={{ padding: '28px 36px 32px' }}>
