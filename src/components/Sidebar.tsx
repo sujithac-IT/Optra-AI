@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Compass, Bot, ShieldCheck, Radar,
-  QrCode, Users, Zap, ChevronRight, Bell, Settings, LogOut, Sparkles
+  QrCode, Users, ChevronRight, Bell, Settings, LogOut, Sparkles
 } from 'lucide-react';
 import { FaceScanIcon } from '@/components/Icons';
+import { useUser, getInitials } from '@/context/AuthContext';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -19,6 +20,16 @@ const navItems = [
 
 export default function Sidebar({ onOpenVerify }: { onOpenVerify?: () => void }) {
   const pathname = usePathname();
+  const { user, logout } = useUser();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/login');
+  };
+
+  const initials = user ? getInitials(user.name) : '??';
+  const displayName = user?.name ?? 'Guest';
 
   return (
     <aside className="sidebar">
@@ -111,7 +122,7 @@ export default function Sidebar({ onOpenVerify }: { onOpenVerify?: () => void })
 
       {/* Bottom Profile Section */}
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px', marginTop: '16px' }}>
-        <div 
+        <div
           onClick={onOpenVerify}
           style={{
             display: 'flex', alignItems: 'center', gap: '10px',
@@ -127,9 +138,10 @@ export default function Sidebar({ onOpenVerify }: { onOpenVerify?: () => void })
             background: 'linear-gradient(135deg, #1A73E8, #8E24AA)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '13px', fontWeight: '700', color: 'white',
-          }}>RS</div>
+            flexShrink: 0,
+          }}>{initials}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Rahul Sharma</div>
+            <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{displayName}</div>
             <div style={{ fontSize: '11px', color: '#188038', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <FaceScanIcon size={12} color="#188038" /> Face ID Verified
             </div>
@@ -142,7 +154,7 @@ export default function Sidebar({ onOpenVerify }: { onOpenVerify?: () => void })
           <button title="Settings" style={{ flex: 1, padding: '8px', borderRadius: '8px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Settings size={15} />
           </button>
-          <button title="Logout" style={{ flex: 1, padding: '8px', borderRadius: '8px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button title="Logout" onClick={handleLogout} style={{ flex: 1, padding: '8px', borderRadius: '8px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <LogOut size={15} />
           </button>
         </div>

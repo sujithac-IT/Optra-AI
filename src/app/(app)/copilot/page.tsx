@@ -2,10 +2,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { mockStudentProfile, mockOpportunities } from '@/lib/mockData';
 import {
-  Send, Sparkles, Bot, FileText, Upload, CheckCircle, ArrowRight,
+  Send, Sparkles, Bot, FileText, Upload, CheckCircle2, ArrowRight,
   Target, Code, BookOpen, AlertTriangle, Download, RefreshCw, Copy, Check, User
 } from 'lucide-react';
 import { GeminiIcon, WhatsAppIcon, LinkedInIcon, UnstopIcon } from '@/components/Icons';
+import VoiceoverAssistant, { speakText } from '@/components/VoiceoverAssistant';
 
 type ChatMessage = {
   id: string;
@@ -45,7 +46,7 @@ const RadarChart = ({ skills }: { skills: typeof mockStudentProfile.skills }) =>
       ))}
       <polygon points={polygon} fill="rgba(26,115,232,0.15)" stroke="#1A73E8" strokeWidth="2.5" />
       {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="4" fill="#1A73E8" stroke="#34A853" strokeWidth="1.5" />
+        <circle key={i} cx={p.x} cy={p.y} r="4" fill="#1A73E8" stroke="#188038" strokeWidth="1.5" />
       ))}
       {points.map((p, i) => (
         <text key={i} x={p.lx} y={p.ly} textAnchor="middle" dominantBaseline="middle" fontSize="10" fill="var(--text-secondary)" fontFamily="Inter">
@@ -59,23 +60,24 @@ const RadarChart = ({ skills }: { skills: typeof mockStudentProfile.skills }) =>
 export default function CopilotPage() {
   const [activeTab, setActiveTab] = useState<'chat' | 'matrix'>('chat');
   const [selectedModel, setSelectedModel] = useState<'optra-3.6' | 'gemini-pro' | 'deepseek-r1'>('optra-3.6');
-  
+  const [language, setLanguage] = useState('en-US');
+
   // Chat State
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'init-1',
       role: 'assistant',
-      content: `Hello Rahul! 👋 I am **Optra AI Copilot Engine**, your personal career strategist powered by Google AI models.
+      content: `Hello Rahul. I am the Optra AI Copilot Engine, powered by Google AI models.
 
-I have loaded your profile (**VIT Vellore · Optra Score: 782/1000**). 
+Profile loaded: VIT Vellore · Optra Score: 782/1000.
 
-Here is how I can assist you today:
-- 🚀 **Resume & ATS Check**: Evaluate your resume against top LinkedIn & Unstop jobs.
-- 🎯 **3-Day Roadmap**: Generate a targeted learning plan for your dream company.
-- 💡 **Interview Prep**: Practice System Design & Coding questions.
-- 💼 **Job Finder**: Recommend live internships matching your stack (React, Python, Node.js).
+How I can assist you:
+- Resume & ATS Compatibility: Evaluate your resume against LinkedIn & Unstop jobs.
+- Coursera & Google Roadmap: Generate targeted learning paths with YouTube video tutorials.
+- Technical & System Design Interviews: Practice coding and system architecture questions.
+- Job Search: Recommend live internships matching React, Python, and Node.js.
 
-What would you like to explore first?`,
+What would you like to explore?`,
       timestamp: 'Just now'
     }
   ]);
@@ -94,10 +96,10 @@ What would you like to explore first?`,
   }, [messages, isTyping]);
 
   const promptSuggestions = [
-    "🚀 Analyze my resume for SDE role @ Google",
-    "💼 Recommend top LinkedIn & Unstop internships for React/Python",
-    "🎯 Give me a 3-day roadmap for System Design & Docker",
-    "📝 Generate AI-tailored ATS bullet points for my portfolio"
+    "Analyze my resume for SDE role at Google",
+    "Recommend top LinkedIn & Unstop internships for React/Python",
+    "Generate a targeted 3-day roadmap for System Design and Docker",
+    "Generate ATS bullet points for my portfolio"
   ];
 
   const handleSendMessage = (textToSend?: string) => {
@@ -116,83 +118,64 @@ What would you like to explore first?`,
     setAttachedFile(null);
     setIsTyping(true);
 
-    // Dynamic AI Intelligence Engine Response
+    // AI Response Engine
     setTimeout(() => {
       let aiResponse = "";
       const lower = messageText.toLowerCase();
 
       if (lower.includes('resume') || lower.includes('ats')) {
-        aiResponse = `### 📄 ATS Resume & Gap Analysis for SDE Role
+        aiResponse = `### ATS Resume & Profile Gap Analysis for SDE Role
 
-I have evaluated your profile against **Software Development Engineer (SDE-1)** benchmarks:
+Evaluated profile against Software Development Engineer (SDE-1) standards:
 
-**Overall ATS Score**: **91 / 100** (High Match)
+Overall ATS Match Score: 91 / 100
 
-#### Key Strengths Identified:
-1. **Full-Stack Competency**: Strong React (88%) and Node.js (80%) foundations.
-2. **Production Impact**: Built React/Node apps serving 500+ active users.
-3. **Verification Status**: DigiLocker CGPA 8.4 + WebCam Face ID verified.
+Key Technical Strengths:
+1. Full-Stack Foundation: React (88%) and Node.js (80%).
+2. Production Track Record: Built production React/Node applications serving 500+ users.
+3. Profile Trust: Verified DigiLocker CGPA 8.4 + WebCam Face ID authentication.
 
-#### Critical Skill Gaps to Fix:
-- 🔴 **Docker / Containerization**: Currently at **45%** (Need: **75%**).
-- 🟡 **System Design (HLD)**: Currently at **40%** (Need: **70%**).
+Identified Skill Gaps:
+- Docker Containerization: Current 45% (Required: 75%).
+- System Design Architecture: Current 40% (Required: 70%).
 
 \`\`\`javascript
 // Suggested ATS Resume Bullet Point
-"Engineered a scalable microservices architecture with FastAPI & Redis, reducing API response times by 40% under 1,000+ concurrent sessions."
+"Engineered a scalable microservices architecture with FastAPI & Redis, reducing API latency by 40% under 1,000+ concurrent sessions."
 \`\`\`
 
-Would you like me to generate a tailored 3-day roadmap to bridge the Docker & System Design gap?`;
+Would you like me to open the Coursera & Google learning roadmap for Docker and System Design?`;
       } else if (lower.includes('internship') || lower.includes('job') || lower.includes('linkedin') || lower.includes('unstop')) {
-        aiResponse = `### 💼 Real-Time Job & Internship Recommendations
+        aiResponse = `### Real-Time LinkedIn & Unstop Opportunities
 
-Based on your verified skills and Optra Score (782), here are the top 3 live openings from **LinkedIn API** and **Unstop API**:
+Based on your verified skills and Optra Score (782), here are the top 3 live openings:
 
-1. **Google India — AI Engineer & Full-Stack Developer**
-   - **Source**: LinkedIn Jobs API
-   - **Match Score**: **96%**
-   - **Stipend/Package**: ₹18–25 LPA
-   - **Location**: Bangalore / Hybrid
-   - **Direct Link**: [Apply on LinkedIn](https://linkedin.com/jobs/view/google-ai-dev)
+1. Google India — AI Engineer & Full-Stack Developer
+   - Source: LinkedIn Jobs API
+   - Match Score: 96%
+   - Package: ₹18–25 LPA
+   - Location: Bangalore / Hybrid
 
-2. **Flipkart GRiD 7.0 — Software Development Track**
-   - **Source**: Unstop Competition API
-   - **Match Score**: **90%**
-   - **Prize**: ₹15 Lakhs + Pre-Placement Interview (PPI)
-   - **Deadline**: 17 days left
+2. Flipkart GRiD 7.0 — Software Development Track
+   - Source: Unstop Competition API
+   - Match Score: 90%
+   - Prize: ₹15 Lakhs + Pre-Placement Interview (PPI)
 
-3. **Microsoft India — Frontend Engineer Intern**
-   - **Source**: LinkedIn Jobs API
-   - **Match Score**: **94%**
-   - **Stipend**: ₹50,000/mo
+3. Microsoft India — Frontend Engineer Intern
+   - Source: LinkedIn Jobs API
+   - Match Score: 94%
+   - Stipend: ₹50,000/mo
 
-Would you like me to tailor your resume specifically for Google or Flipkart GRiD?`;
-      } else if (lower.includes('roadmap') || lower.includes('system design') || lower.includes('docker')) {
-        aiResponse = `### 🎯 Targeted 3-Day Accelerated Roadmap
-
-To qualify for Tier-1 SDE roles and boost your Optra score above 850:
-
-#### 📅 **Day 1: Docker Containerization**
-- **Action**: Write a multi-stage \`Dockerfile\` for your Next.js frontend and FastAPI backend.
-- **Deliverable**: Create a \`docker-compose.yml\` and push the image to Docker Hub.
-- **Recommended Resource**: TechWorld with Nana (Docker Crash Course).
-
-#### 📅 **Day 2: System Design (High-Level Architecture)**
-- **Action**: Learn caching strategies (Redis), Load Balancers (Nginx), and database indexing.
-- **Deliverable**: Draw an HLD diagram for an AI Chatbot infrastructure.
-- **Recommended Resource**: Gaurav Sen System Design Primer.
-
-#### 📅 **Day 3: One-Click Application**
-- **Action**: Update your GitHub README with Docker badges and apply to Sarvam AI & Google India.`;
+Select any role to generate a tailored 1-click application.`;
       } else {
-        aiResponse = `That is a great query! Based on your target role as **Full Stack AI Developer**:
+        aiResponse = `Regarding your query:
 
-I recommend focusing on **FastAPI backend integration**, **Docker container deployment**, and **LLM prompt engineering**. 
+I recommend focusing on FastAPI backend service integration, Docker container deployment, and system architecture.
 
-You can ask me to:
-- Generate interview coding problems (DSA/System Design).
-- Review your project architecture.
-- Draft a cold message for recruiters on LinkedIn.`;
+You can request:
+- System Design interview questions.
+- Code optimization review.
+- Cold outreach messages for LinkedIn technical recruiters.`;
       }
 
       const aiMsg: ChatMessage = {
@@ -204,44 +187,56 @@ You can ask me to:
 
       setMessages(prev => [...prev, aiMsg]);
       setIsTyping(false);
-    }, 1400);
+
+      // Read AI response aloud using SpeechSynthesis Voiceover
+      speakText(aiResponse, language);
+    }, 1200);
   };
 
   return (
     <div style={{ maxWidth: '1150px', margin: '0 auto' }}>
-      {/* Top Header & Navigation */}
+      {/* Top Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '26px', fontWeight: '800', fontFamily: 'Space Grotesk', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
             AI Copilot Workspace <span style={{ fontSize: '11px', fontWeight: '700', color: '#1A73E8', background: 'rgba(26,115,232,0.1)', padding: '3px 10px', borderRadius: '12px' }}>Google Engine 3.6</span>
           </h1>
-          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Conversational AI assistant like ChatGPT & Gemini trained on real-time career & ATS intelligence</p>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Conversational AI career assistant with real-time Multilingual Voiceover and Speech input</p>
         </div>
 
-        {/* Tab Switcher */}
-        <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-          <button
-            onClick={() => setActiveTab('chat')}
-            style={{
-              padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
-              background: activeTab === 'chat' ? '#1A73E8' : 'transparent',
-              color: activeTab === 'chat' ? 'white' : 'var(--text-secondary)', border: 'none',
-              display: 'flex', alignItems: 'center', gap: '6px'
-            }}
-          >
-            <Bot size={16} /> AI Chatbot Mode
-          </button>
-          <button
-            onClick={() => setActiveTab('matrix')}
-            style={{
-              padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
-              background: activeTab === 'matrix' ? '#1A73E8' : 'transparent',
-              color: activeTab === 'matrix' ? 'white' : 'var(--text-secondary)', border: 'none',
-              display: 'flex', alignItems: 'center', gap: '6px'
-            }}
-          >
-            <Target size={16} /> Skill Matrix & Gap Engine
-          </button>
+        {/* Tab Switcher & Voice Assistant Control */}
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <VoiceoverAssistant
+            currentLanguage={language}
+            onLanguageChange={setLanguage}
+            onVoiceInput={(transcript) => handleSendMessage(transcript)}
+            textToSpeak={messages[messages.length - 1]?.content}
+          />
+
+          <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border)' }}>
+            <button
+              onClick={() => setActiveTab('chat')}
+              style={{
+                padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+                background: activeTab === 'chat' ? '#1A73E8' : 'transparent',
+                color: activeTab === 'chat' ? 'white' : 'var(--text-secondary)', border: 'none',
+                display: 'flex', alignItems: 'center', gap: '6px'
+              }}
+            >
+              <Bot size={16} /> AI Chatbot Workspace
+            </button>
+            <button
+              onClick={() => setActiveTab('matrix')}
+              style={{
+                padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+                background: activeTab === 'matrix' ? '#1A73E8' : 'transparent',
+                color: activeTab === 'matrix' ? 'white' : 'var(--text-secondary)', border: 'none',
+                display: 'flex', alignItems: 'center', gap: '6px'
+              }}
+            >
+              <Target size={16} /> Skill Vector Matrix
+            </button>
+          </div>
         </div>
       </div>
 
@@ -256,13 +251,13 @@ You can ask me to:
             <div style={{ padding: '12px 20px', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <GeminiIcon size={20} color="#1A73E8" />
-                <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)' }}>Select AI Model:</span>
+                <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)' }}>Select Model Architecture:</span>
               </div>
               <div style={{ display: 'flex', gap: '6px' }}>
                 {[
-                  { id: 'optra-3.6', label: 'Optra 3.6 Flash (Fast)' },
+                  { id: 'optra-3.6', label: 'Optra 3.6 Flash' },
                   { id: 'gemini-pro', label: 'Gemini Pro 1.5' },
-                  { id: 'deepseek-r1', label: 'DeepSeek R1 Architecture' },
+                  { id: 'deepseek-r1', label: 'DeepSeek R1 Reasoning' },
                 ].map(m => (
                   <button
                     key={m.id}
@@ -290,7 +285,7 @@ You can ask me to:
                 }}>
                   <div style={{
                     width: '36px', height: '36px', borderRadius: '10px',
-                    background: msg.role === 'user' ? '#1A73E8' : 'linear-gradient(135deg, #1A73E8, #34A853)',
+                    background: msg.role === 'user' ? '#1A73E8' : '#188038',
                     color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0, fontSize: '14px', fontWeight: '700'
                   }}>
@@ -298,10 +293,10 @@ You can ask me to:
                   </div>
 
                   <div style={{
-                    maxWidth: '82%', background: msg.role === 'user' ? 'rgba(26,115,232,0.1)' : 'var(--bg-secondary)',
-                    border: `1px solid ${msg.role === 'user' ? 'rgba(26,115,232,0.3)' : 'var(--border)'}`,
+                    maxWidth: '82%', background: msg.role === 'user' ? 'rgba(26,115,232,0.08)' : 'var(--bg-secondary)',
+                    border: `1px solid ${msg.role === 'user' ? 'rgba(26,115,232,0.25)' : 'var(--border)'}`,
                     borderRadius: '16px', padding: '16px 20px', fontSize: '14px', lineHeight: '1.6',
-                    color: 'var(--text-primary)', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+                    color: 'var(--text-primary)', boxShadow: '0 1px 4px rgba(0,0,0,0.02)'
                   }}>
                     <div style={{ whiteSpace: 'pre-wrap' }}>
                       {msg.content}
@@ -319,7 +314,7 @@ You can ask me to:
                     <Bot size={18} />
                   </div>
                   <div style={{ background: 'var(--bg-secondary)', padding: '12px 18px', borderRadius: '16px', border: '1px solid var(--border)', fontSize: '13px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <RefreshCw size={14} className="spin" /> Optra AI is reasoning...
+                    <RefreshCw size={14} className="spin" /> Reasoning response...
                   </div>
                 </div>
               )}
@@ -334,7 +329,7 @@ You can ask me to:
                   onClick={() => handleSendMessage(ps)}
                   style={{
                     whiteSpace: 'nowrap', padding: '6px 12px', borderRadius: '16px', fontSize: '11px', fontWeight: '600',
-                    background: 'rgba(26,115,232,0.06)', border: '1px solid rgba(26,115,232,0.2)', color: '#1A73E8', cursor: 'pointer'
+                    background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: '#1A73E8', cursor: 'pointer'
                   }}
                 >
                   {ps}
@@ -351,14 +346,14 @@ You can ask me to:
                 </div>
               )}
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <label title="Attach Resume or Document" style={{ cursor: 'pointer', padding: '10px', borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <label title="Attach File" style={{ cursor: 'pointer', padding: '10px', borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Upload size={16} color="var(--text-secondary)" />
                   <input type="file" accept=".pdf,.txt,.docx" onChange={e => e.target.files?.[0] && setAttachedFile(e.target.files[0].name)} style={{ display: 'none' }} />
                 </label>
 
                 <input
                   className="input"
-                  placeholder="Ask Optra AI anything (e.g. review my resume, find jobs, system design)..."
+                  placeholder="Ask Optra AI anything (or speak using mic button above)..."
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
@@ -380,7 +375,6 @@ You can ask me to:
 
           {/* Right Context Sidebar */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {/* Candidate Context Card */}
             <div className="card">
               <div style={{ fontSize: '14px', fontWeight: '800', fontFamily: 'Space Grotesk', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Bot size={16} color="#1A73E8" /> Profile Context
@@ -400,52 +394,36 @@ You can ask me to:
                 </div>
               </div>
             </div>
-
-            {/* Quick Actions */}
-            <div className="card">
-              <div style={{ fontSize: '14px', fontWeight: '800', fontFamily: 'Space Grotesk', marginBottom: '14px' }}>AI Shortcuts</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <button onClick={() => handleSendMessage("Generate ATS resume for Sarvam AI")} className="btn-secondary" style={{ width: '100%', fontSize: '12px', textAlign: 'left', padding: '8px 12px' }}>
-                  📝 Tailor Resume for SDE
-                </button>
-                <button onClick={() => handleSendMessage("Show me high-match LinkedIn jobs")} className="btn-secondary" style={{ width: '100%', fontSize: '12px', textAlign: 'left', padding: '8px 12px' }}>
-                  💼 Search LinkedIn API Jobs
-                </button>
-                <button onClick={() => handleSendMessage("Practice system design interview questions")} className="btn-secondary" style={{ width: '100%', fontSize: '12px', textAlign: 'left', padding: '8px 12px' }}>
-                  💻 Mock System Design Interview
-                </button>
-              </div>
-            </div>
           </div>
 
         </div>
       )}
 
-      {/* TAB 2: Skill Matrix & Gap Engine */}
+      {/* TAB 2: Skill Matrix */}
       {activeTab === 'matrix' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
           <div className="card" style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '15px', fontWeight: '800', fontFamily: 'Space Grotesk', marginBottom: '20px' }}>
-              Your Skill Vector Radar
+              Skill Vector Radar
             </div>
             <RadarChart skills={mockStudentProfile.skills} />
           </div>
 
           <div className="card">
             <div style={{ fontSize: '15px', fontWeight: '800', fontFamily: 'Space Grotesk', marginBottom: '16px' }}>
-              Gap Analysis vs. Target Jobs
+              Gap Analysis vs. Target Roles
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {[
-                { skill: 'Docker / Containerization', current: 45, needed: 75, status: 'high' },
-                { skill: 'System Design (HLD)', current: 40, needed: 70, status: 'high' },
-                { skill: 'FastAPI Backend', current: 75, needed: 80, status: 'ok' },
+                { skill: 'Docker Containerization', current: 45, needed: 75, status: 'high' },
+                { skill: 'System Design Architecture', current: 40, needed: 70, status: 'high' },
+                { skill: 'FastAPI Microservices', current: 75, needed: 80, status: 'ok' },
               ].map(g => (
                 <div key={g.skill}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '4px' }}>
                     <span style={{ fontWeight: '600' }}>{g.skill}</span>
                     <span style={{ fontSize: '11px', color: g.status === 'high' ? '#EA4335' : '#188038', fontWeight: '700' }}>
-                      {g.status === 'high' ? '🔴 High Gap' : '✓ Good Match'}
+                      {g.status === 'high' ? 'High Gap' : 'Matched'}
                     </span>
                   </div>
                   <div className="progress-bar" style={{ height: '8px' }}>
@@ -457,11 +435,6 @@ You can ask me to:
           </div>
         </div>
       )}
-
-      <style>{`
-        .spin { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
     </div>
   );
 }

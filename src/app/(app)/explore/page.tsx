@@ -12,10 +12,10 @@ const sources = ['all', 'LinkedIn', 'Unstop', 'Verified Optra Direct'];
 const types = ['all', 'job', 'internship', 'hackathon', 'grant'];
 
 const sourceLabels: Record<string, string> = {
-  all: '🌟 All Sources',
-  LinkedIn: '💼 LinkedIn Jobs API',
-  Unstop: '🏆 Unstop Competitions',
-  'Verified Optra Direct': '✅ Verified Optra Direct',
+  all: 'All Sources',
+  LinkedIn: 'LinkedIn Jobs API',
+  Unstop: 'Unstop Competitions',
+  'Verified Optra Direct': 'Verified Optra Direct',
 };
 
 function OpportunityModal({ opp, onClose }: { opp: typeof mockOpportunities[0]; onClose: () => void }) {
