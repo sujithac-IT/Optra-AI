@@ -1,7 +1,6 @@
 {
   "name": "optra-ai",
-  "version": "1.0.0",
-  "description": "Optra AI - Your Autonomous Tech Career Copilot",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,21 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "next": "^14.0.0",
-    "tailwindcss": "^3.3.0",
-    "lucide-react": "^0.292.0",
-    "qrcode.react": "^1.0.1"
+    "next": "14.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "lucide-react": "0.268.0",
+    "qrcode.react": "1.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.0",
-    "@types/node": "^20.4.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.27",
-    "eslint": "^8.45.0",
-    "eslint-config-next": "^14.0.0"
+    "@types/react": "18.2.28",
+    "@types/node": "20.5.2",
+    "typescript": "5.5.2",
+    "tailwindcss": "4.4.0",
+    "postcss": "8.4.33",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.47.0",
+    "eslint-config-next": "14.0.0"
   }
 }
