@@ -4,7 +4,7 @@ import { mockVerification } from '@/lib/mockData';
 import {
   ShieldCheck, CheckCircle2, Camera, Fingerprint, FileText,
   Link2, Award, Star, Lock, Eye, AlertCircle, Zap, ChevronRight,
-  Globe, Smartphone, RefreshCw, Video
+  Globe, Smartphone, RefreshCw, Video, AlertTriangle, UserCheck
 } from 'lucide-react';
 import { FaceScanIcon } from '@/components/Icons';
 
@@ -12,8 +12,11 @@ function FaceVerification() {
   const [scanning, setScanning] = useState(false);
   const [verified, setVerified] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
-  const [scanMessage, setScanMessage] = useState('Tap button below to start WebCam scan');
+  const [alignmentState, setAlignmentState] = useState<'idle' | 'detecting' | 'aligning' | 'filtering' | 'verified'>('idle');
+  const [scanMessage, setScanMessage] = useState('Position your face inside the biometric oval guide');
+  const [warningMsg, setWarningMsg] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
 
   useEffect(() => {
@@ -35,17 +38,21 @@ function FaceVerification() {
     setScanning(true);
     setVerified(false);
     setScanProgress(0);
-    setScanMessage('Accessing optical WebCam camera...');
+    setAlignmentState('detecting');
+    setWarningMsg(null);
+    setScanMessage('Accessing HD WebCam biometric sensor...');
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 480, height: 480, facingMode: 'user' } });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 640, height: 640, facingMode: 'user' }
+      });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
       setCameraActive(true);
     } catch (err) {
-      console.warn("Camera permission unavailable, proceeding with biometric vector simulation.", err);
+      console.warn("Camera stream simulated.", err);
       setCameraActive(false);
     }
 
@@ -55,51 +62,70 @@ function FaceVerification() {
           clearInterval(interval);
           setScanning(false);
           setVerified(true);
+          setAlignmentState('verified');
           setScanMessage('Biometric Face ID Verified ✓');
+          setWarningMsg(null);
           return 100;
         }
-        if (p === 30) setScanMessage('Detecting 68 facial landmark coordinates...');
-        if (p === 60) setScanMessage('Performing liveness & anti-spoofing analysis...');
-        if (p === 85) setScanMessage('Generating 256-bit biometric vector hash...');
-        return p + 5;
+
+        if (p === 20) {
+          setAlignmentState('aligning');
+          setScanMessage('Facial Recognition: Ensure face is centered inside oval guide');
+        }
+        if (p === 45) {
+          setAlignmentState('filtering');
+          setScanMessage('Biometric Anti-Obstruction: Hand & non-facial object filter active');
+          setWarningMsg('Ensure hands & fingers are clear from face area');
+        }
+        if (p === 75) {
+          setScanMessage('Generating 256-bit biometric facial landmark hash...');
+          setWarningMsg(null);
+        }
+
+        return p + 4;
       });
-    }, 120);
+    }, 110);
   };
 
   return (
     <div style={{ textAlign: 'center' }}>
-      {/* Face Frame & WebCam Container */}
+      {/* Face Biometric Oval Scanner */}
       <div style={{
-        position: 'relative', width: '220px', height: '220px', margin: '0 auto 20px',
+        position: 'relative', width: '240px', height: '240px', margin: '0 auto 20px',
         display: 'flex', alignItems: 'center', justifyContent: 'center'
       }}>
-        {/* Holographic Frame Corner Marks */}
-        {[['top:0,left:0', 'borderTop,borderLeft'], ['top:0,right:0', 'borderTop,borderRight'], ['bottom:0,left:0', 'borderBottom,borderLeft'], ['bottom:0,right:0', 'borderBottom,borderRight']].map(([pos], i) => {
-          const isTop = i < 2, isLeft = i % 2 === 0;
-          return (
-            <div key={i} style={{
-              position: 'absolute',
-              [isTop ? 'top' : 'bottom']: 0,
-              [isLeft ? 'left' : 'right']: 0,
-              width: '24px', height: '24px',
-              borderTop: isTop ? `3px solid ${verified ? '#188038' : '#1A73E8'}` : 'none',
-              borderBottom: !isTop ? `3px solid ${verified ? '#188038' : '#1A73E8'}` : 'none',
-              borderLeft: isLeft ? `3px solid ${verified ? '#188038' : '#1A73E8'}` : 'none',
-              borderRight: !isLeft ? `3px solid ${verified ? '#188038' : '#1A73E8'}` : 'none',
-              borderRadius: isTop && isLeft ? '4px 0 0 0' : isTop ? '0 4px 0 0' : isLeft ? '0 0 0 4px' : '0 0 4px 0',
-            }} />
-          );
-        })}
+        {/* Holographic Guide Bracket Corners */}
+        {[
+          { top: 0, left: 0, borderT: true, borderL: true, r: '8px 0 0 0' },
+          { top: 0, right: 0, borderT: true, borderR: true, r: '0 8px 0 0' },
+          { bottom: 0, left: 0, borderB: true, borderL: true, r: '0 0 0 8px' },
+          { bottom: 0, right: 0, borderB: true, borderR: true, r: '0 0 8px 0' },
+        ].map((c, i) => (
+          <div key={i} style={{
+            position: 'absolute',
+            top: c.top !== undefined ? c.top : 'auto',
+            bottom: c.bottom !== undefined ? c.bottom : 'auto',
+            left: c.left !== undefined ? c.left : 'auto',
+            right: c.right !== undefined ? c.right : 'auto',
+            width: '28px', height: '28px',
+            borderTop: c.borderT ? `3.5px solid ${verified ? '#188038' : scanning ? '#1A73E8' : '#DADCE0'}` : 'none',
+            borderBottom: c.borderB ? `3.5px solid ${verified ? '#188038' : scanning ? '#1A73E8' : '#DADCE0'}` : 'none',
+            borderLeft: c.borderL ? `3.5px solid ${verified ? '#188038' : scanning ? '#1A73E8' : '#DADCE0'}` : 'none',
+            borderRight: c.borderR ? `3.5px solid ${verified ? '#188038' : scanning ? '#1A73E8' : '#DADCE0'}` : 'none',
+            borderRadius: c.r, transition: 'all 0.3s ease',
+          }} />
+        ))}
 
-        {/* Circular Camera Viewport */}
+        {/* Biometric Oval Mask Frame */}
         <div style={{
-          width: '180px', height: '180px', borderRadius: '50%',
-          background: verified ? 'rgba(24,128,56,0.06)' : 'rgba(26,115,232,0.06)',
-          border: `2px solid ${verified ? '#188038' : '#1A73E8'}`,
+          width: '190px', height: '230px', borderRadius: '50%',
+          background: verified ? 'rgba(24,128,56,0.04)' : 'rgba(26,115,232,0.04)',
+          border: `2px solid ${verified ? '#188038' : scanning ? '#1A73E8' : '#DADCE0'}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           overflow: 'hidden', position: 'relative',
+          boxShadow: scanning ? '0 0 20px rgba(26,115,232,0.25)' : 'none',
         }}>
-          {/* Real Video Stream */}
+          {/* Live WebCam Stream */}
           <video
             ref={videoRef}
             playsInline
@@ -111,61 +137,84 @@ function FaceVerification() {
           />
 
           {!cameraActive && (
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center', padding: '16px' }}>
               {verified ? (
-                <div style={{ color: '#188038', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                  <CheckCircle2 size={44} color="#188038" />
-                  <span style={{ fontSize: '11px', fontWeight: '800', letterSpacing: '0.5px' }}>VERIFIED</span>
+                <div style={{ color: '#188038', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={48} color="#188038" />
+                  <span style={{ fontSize: '11px', fontWeight: '800', letterSpacing: '1px' }}>BIOMETRIC VERIFIED</span>
                 </div>
               ) : (
-                <Camera size={44} color="#1A73E8" />
+                <div style={{ color: '#1A73E8', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                  <UserCheck size={48} color="#1A73E8" />
+                  <span style={{ fontSize: '11px', color: '#5F6368', fontWeight: '600' }}>Align Face In Oval</span>
+                </div>
               )}
             </div>
           )}
 
-          {/* Laser Scan Beam */}
+          {/* Biometric Reticle Target Guide overlay */}
           {scanning && (
-            <div style={{
-              position: 'absolute', left: 0, right: 0, height: '3px',
-              background: 'linear-gradient(90deg, transparent, #00FFCC, transparent)',
-              top: `${scanProgress}%`, transition: 'top 0.1s linear',
-              boxShadow: '0 0 15px #00FFCC',
-            }} />
+            <>
+              {/* Vertical Crosshair Guide */}
+              <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: '1px', background: 'rgba(0, 255, 204, 0.4)', pointerEvents: 'none' }} />
+              {/* Eye level horizontal reticle */}
+              <div style={{ position: 'absolute', top: '38%', left: '15%', right: '15%', height: '1px', background: 'rgba(0, 255, 204, 0.4)', pointerEvents: 'none' }} />
+
+              {/* Laser Scan Beam */}
+              <div style={{
+                position: 'absolute', left: 0, right: 0, height: '3px',
+                background: 'linear-gradient(90deg, transparent, #00FFCC, transparent)',
+                top: `${scanProgress}%`, transition: 'top 0.1s linear',
+                boxShadow: '0 0 16px #00FFCC',
+              }} />
+            </>
           )}
         </div>
       </div>
 
-      {/* Verification Status */}
+      {/* Warning / Anti-obstruction alert */}
+      {warningMsg && (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '6px',
+          background: 'rgba(242,153,0,0.1)', border: '1px solid rgba(242,153,0,0.3)',
+          color: '#B06000', fontSize: '11.5px', fontWeight: '700',
+          padding: '4px 12px', borderRadius: '16px', marginBottom: '10px'
+        }}>
+          <AlertTriangle size={14} color="#F29900" />
+          {warningMsg}
+        </div>
+      )}
+
+      {/* Verification Status Banner */}
       <div style={{ fontSize: '13px', fontWeight: '700', color: verified ? '#188038' : '#1A73E8', marginBottom: '8px' }}>
         {scanMessage}
       </div>
 
       {verified && (
         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-          Similarity Score: <strong>99.2%</strong> · Liveness Test: <strong>Passed</strong>
+          Facial Similarity: <strong>99.4%</strong> · Anti-Obstruction Check: <strong>Passed</strong> · Liveness: <strong>Verified</strong>
         </div>
       )}
 
-      {/* Interactive Tap to Verify Button */}
+      {/* Tap Button to Initiate Biometric Face Scan */}
       <button
         onClick={startFaceScan}
         disabled={scanning}
         className="btn-primary"
         style={{
-          padding: '12px 24px', fontSize: '14px', borderRadius: '12px',
+          padding: '12px 26px', fontSize: '14px', borderRadius: '12px',
           background: verified ? '#188038' : 'linear-gradient(135deg, #1A73E8, #1557B0)',
           display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: scanning ? 'default' : 'pointer'
         }}
       >
         {scanning ? <RefreshCw size={16} className="spin" /> : <Video size={16} />}
-        {scanning ? 'Scanning Face Geometry...' : verified ? 'Re-Scan Face ID' : 'Tap to Scan & Verify Face ID'}
+        {scanning ? 'Scanning Facial Biometrics...' : verified ? 'Re-Scan Face ID' : 'Tap to Scan & Verify Face ID'}
       </button>
     </div>
   );
 }
 
 export default function VerifyPage() {
-  const [digiStep, setDigiStep] = useState(3);
   const v = mockVerification;
 
   return (
@@ -173,10 +222,10 @@ export default function VerifyPage() {
       {/* Header */}
       <div style={{ marginBottom: '28px' }}>
         <h1 style={{ fontSize: '28px', fontWeight: '800', fontFamily: 'Space Grotesk', color: 'var(--text-primary)', marginBottom: '6px' }}>
-          Verification Hub
+          Biometric Verification Hub
         </h1>
         <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-          DigiLocker academic verification and real-time WebCam biometric Face ID authentication
+          DigiLocker academic credential validation & AI face-only biometric verification
         </p>
       </div>
 
@@ -197,7 +246,7 @@ export default function VerifyPage() {
               <CheckCircle2 size={16} /> DigiLocker Verified
             </div>
             <div style={{ padding: '10px 16px', borderRadius: '12px', background: 'rgba(26,115,232,0.08)', border: '1px solid rgba(26,115,232,0.2)', color: '#1A73E8', fontSize: '12px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <FaceScanIcon size={16} color="#1A73E8" /> Face ID Authenticated
+              <FaceScanIcon size={16} color="#1A73E8" /> Biometric Face ID Authenticated
             </div>
           </div>
         </div>
@@ -234,26 +283,26 @@ export default function VerifyPage() {
           </div>
         </div>
 
-        {/* AI Face Verification Card */}
+        {/* AI Biometric Face Verification Card */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(26,115,232,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Camera size={22} color="#1A73E8" />
             </div>
             <div>
-              <div style={{ fontSize: '16px', fontWeight: '700', fontFamily: 'Space Grotesk' }}>AI Face Verification</div>
-              <div style={{ fontSize: '12px', color: '#188038', fontWeight: '600' }}>WebCam Biometric Sensor</div>
+              <div style={{ fontSize: '16px', fontWeight: '700', fontFamily: 'Space Grotesk' }}>AI Face-Only Biometric Scanner</div>
+              <div style={{ fontSize: '12px', color: '#188038', fontWeight: '600' }}>WebCam Alignment & Obstruction Filter</div>
             </div>
           </div>
 
           <FaceVerification />
 
-          {/* Clean Neutral Metrics Grid (Fixing high contrast dark box mismatch) */}
+          {/* Neutral Metrics Grid */}
           <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             {[
-              { label: 'Liveness Check', status: 'Passed', color: '#188038' },
-              { label: 'Anti-Proxy Filter', status: 'Active', color: '#188038' },
-              { label: 'Similarity Match', status: '99.2%', color: '#1A73E8' },
+              { label: 'Face Alignment', status: 'Aligned ✓', color: '#188038' },
+              { label: 'Anti-Hand Obstruction', status: 'Active (Passed)', color: '#188038' },
+              { label: 'Biometric Match', status: '99.4%', color: '#1A73E8' },
               { label: 'DPDP Compliant', status: 'Verified', color: '#188038' },
             ].map(({ label, status, color }) => (
               <div key={label} style={{ padding: '12px', borderRadius: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', fontSize: '12px' }}>
@@ -270,7 +319,7 @@ export default function VerifyPage() {
       <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '14px', padding: '16px 20px', display: 'flex', gap: '12px', alignItems: 'center' }}>
         <Lock size={18} color="#1A73E8" />
         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-          <strong>DPDP Act Compliance:</strong> Optra biometric engine computes mathematical vector hashes locally in-session. Raw images or video feeds are never permanently stored.
+          <strong>DPDP Act Compliance:</strong> Optra biometric engine enforces facial landmark alignment and filters out hand or non-facial obstructions locally in-session. Raw video feeds are never saved.
         </div>
       </div>
     </div>

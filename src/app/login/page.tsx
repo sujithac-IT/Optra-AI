@@ -210,9 +210,9 @@ export default function LoginPage() {
   };
 
   const inputStyle = (err?: string): React.CSSProperties => ({
-    width: '100%', padding: '13px 14px 13px 44px', borderRadius: '12px',
-    border: `1.5px solid ${err ? '#EA4335' : 'var(--border, #E2E8F0)'}`,
-    background: 'rgba(255,255,255,0.06)', color: '#0F172A',
+    width: '100%', padding: '13px 14px 13px 44px', borderRadius: '8px',
+    border: `1.5px solid ${err ? '#EA4335' : '#DADCE0'}`,
+    background: '#FFFFFF', color: '#202124',
     fontSize: '14px', outline: 'none', boxSizing: 'border-box',
     transition: 'border-color 0.2s',
     fontFamily: 'Inter, sans-serif',
@@ -221,63 +221,92 @@ export default function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #0F4C81 100%)',
-      fontFamily: 'Inter, Space Grotesk, sans-serif', padding: '20px',
-      position: 'relative', overflow: 'hidden',
+      background: '#F8F9FA',
+      fontFamily: 'Inter, Google Sans, sans-serif', padding: '24px',
+      position: 'relative',
     }}>
-      {/* Background decorative orbs */}
-      <div style={{ position: 'absolute', top: '-10%', left: '-5%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(26,115,232,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: '-10%', right: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(52,168,83,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-      {/* Language Selector */}
-      <div style={{ position: 'absolute', top: '20px', right: '20px', display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)', padding: '8px 14px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.15)' }}>
-        <Globe size={14} color="rgba(255,255,255,0.8)" />
+      {/* Top Bar Language Selector */}
+      <div style={{ position: 'absolute', top: '24px', right: '28px', display: 'flex', alignItems: 'center', gap: '8px', background: '#FFFFFF', padding: '8px 16px', borderRadius: '24px', border: '1px solid #DADCE0', boxShadow: '0 1px 2px rgba(60,64,67,0.08)' }}>
+        <Globe size={15} color="#1A73E8" />
         <select
           value={lang}
           onChange={e => setLang(e.target.value)}
-          style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.9)', fontSize: '12px', fontWeight: '600', outline: 'none', cursor: 'pointer' }}
+          style={{ background: 'transparent', border: 'none', color: '#3C4043', fontSize: '13px', fontWeight: '600', outline: 'none', cursor: 'pointer' }}
         >
-          {LANGUAGES.map(l => <option key={l.code} value={l.code} style={{ background: '#1E293B' }}>{l.label}</option>)}
+          {LANGUAGES.map(l => <option key={l.code} value={l.code} style={{ background: '#FFFFFF', color: '#202124' }}>{l.label}</option>)}
         </select>
       </div>
 
-      {/* Main Card */}
+      {/* Google Standard Card */}
       <div style={{
-        width: '100%', maxWidth: '480px',
-        background: 'rgba(255,255,255,0.97)',
-        backdropFilter: 'blur(20px)',
-        borderRadius: '28px',
-        boxShadow: '0 32px 80px rgba(0,0,0,0.4)',
+        width: '100%', maxWidth: '450px',
+        background: '#FFFFFF',
+        border: '1px solid #DADCE0',
+        borderRadius: '24px',
+        boxShadow: '0 1px 3px rgba(60,64,67,0.12), 0 8px 24px rgba(60,64,67,0.08)',
         overflow: 'hidden',
-        animation: 'scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        animation: 'scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
       }}>
+        {/* Google 4-Color Accent Line */}
+        <div style={{ display: 'flex', height: '4px', width: '100%' }}>
+          <div style={{ flex: 1, background: '#4285F4' }} />
+          <div style={{ flex: 1, background: '#EA4335' }} />
+          <div style={{ flex: 1, background: '#FBBC05' }} />
+          <div style={{ flex: 1, background: '#34A853' }} />
+        </div>
+
         {/* Header */}
         <div style={{
-          background: 'linear-gradient(135deg, #1A73E8 0%, #0D47A1 50%, #34A853 100%)',
-          padding: '32px 36px 28px',
-          color: 'white',
+          padding: '36px 36px 20px',
+          textAlign: 'center',
+          background: '#FFFFFF',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-            <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: '900' }}>O</div>
-            <div>
-              <div style={{ fontSize: '20px', fontWeight: '800', fontFamily: 'Space Grotesk, sans-serif', letterSpacing: '-0.5px' }}>Optra AI</div>
-              <div style={{ fontSize: '11px', opacity: 0.85, letterSpacing: '1px', textTransform: 'uppercase', fontWeight: '700' }}>Career Intelligence Platform</div>
+          {/* Google / Optra Branding */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+            <div style={{
+              width: '40px', height: '40px', borderRadius: '12px',
+              background: '#1A73E8', color: 'white',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '22px', fontWeight: '800', fontFamily: 'Space Grotesk',
+              boxShadow: '0 2px 8px rgba(26,115,232,0.3)',
+            }}>O</div>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{ fontSize: '20px', fontWeight: '800', color: '#202124', fontFamily: 'Space Grotesk, sans-serif' }}>Optra AI</div>
+              <div style={{ fontSize: '11px', color: '#1A73E8', fontWeight: '700', letterSpacing: '0.5px' }}>Google Career OS</div>
             </div>
           </div>
 
           {mode === 'signup' ? (
             <>
-              {/* Step Progress */}
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+              {/* Step Progress Bar */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', marginTop: '10px' }}>
                 {STEP_LABELS.map((label, i) => (
-                  <div key={label} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                    <div style={{ height: '3px', borderRadius: '4px', background: i + 1 <= step ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.25)', transition: 'all 0.4s ease' }} />
-                    <div style={{ fontSize: '9px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', opacity: i + 1 <= step ? 1 : 0.5 }}>{label}</div>
+                  <div key={label} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div style={{ height: '4px', borderRadius: '2px', background: i + 1 <= step ? '#1A73E8' : '#E8EAED', transition: 'all 0.3s ease' }} />
+                    <div style={{ fontSize: '10px', fontWeight: '700', color: i + 1 <= step ? '#1A73E8' : '#70757A' }}>{label}</div>
                   </div>
                 ))}
               </div>
-              <div style={{ fontSize: '18px', fontWeight: '700' }}>
-                {step === 1 && 'Create Your Account'}
+              <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#202124', marginBottom: '4px' }}>
+                {step === 1 && 'Create your Optra Account'}
+                {step === 2 && 'Select Your Skills'}
+                {step === 3 && 'Upload Proof Certificates'}
+                {step === 4 && 'Account Verified'}
+              </h2>
+              <p style={{ fontSize: '13px', color: '#5F6368' }}>
+                {step === 1 && 'Use your student info to sign up for Google Career OS'}
+                {step === 2 && 'Pick your primary technical stack & expertise'}
+                {step === 3 && 'Upload certificates or achievements (optional)'}
+                {step === 4 && 'Your verified profile is ready'}
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#202124', marginBottom: '6px' }}>Sign in</h2>
+              <p style={{ fontSize: '14px', color: '#5F6368' }}>to continue to Optra Career OS</p>
+            </>
+          )}
+        </div>
                 {step === 2 && 'Validate Your Skills'}
                 {step === 3 && 'Upload Certificates'}
                 {step === 4 && 'Profile Ready!'}

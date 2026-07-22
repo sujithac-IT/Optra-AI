@@ -2,20 +2,20 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  LayoutDashboard, Compass, Bot, ShieldCheck, Radar,
-  QrCode, Users, ChevronRight, Bell, Settings, LogOut, Sparkles
+  LayoutGrid, Search, Sparkles, UserCheck, Compass,
+  QrCode, Briefcase, ChevronRight, Bell, Settings, LogOut
 } from 'lucide-react';
 import { FaceScanIcon } from '@/components/Icons';
 import { useUser, getInitials } from '@/context/AuthContext';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/explore', label: 'Explore & Jobs', icon: Compass },
-  { href: '/copilot', label: 'AI Copilot', icon: Bot, badge: 'ChatGPT/Gemini' },
-  { href: '/verify', label: 'Face ID & Verify', icon: ShieldCheck, highlight: true },
-  { href: '/scout', label: 'Scout Agent', icon: Radar },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
+  { href: '/explore', label: 'Explore & Jobs', icon: Search },
+  { href: '/copilot', label: 'AI Copilot', icon: Sparkles, badge: 'ChatGPT/Gemini' },
+  { href: '/verify', label: 'Face ID & Verify', icon: UserCheck, highlight: true },
+  { href: '/scout', label: 'Scout Agent', icon: Compass },
   { href: '/qr', label: 'QR Engine', icon: QrCode },
-  { href: '/recruiter', label: 'Recruiter Hub', icon: Users },
+  { href: '/recruiter', label: 'Recruiter Hub', icon: Briefcase },
 ];
 
 export default function Sidebar({ onOpenVerify }: { onOpenVerify?: () => void }) {
@@ -49,27 +49,6 @@ export default function Sidebar({ onOpenVerify }: { onOpenVerify?: () => void })
           </div>
         </div>
       </Link>
-
-      {/* Agent Status */}
-      <div style={{
-        background: 'rgba(24,128,56,0.06)',
-        border: '1px solid rgba(24,128,56,0.2)',
-        borderRadius: '12px',
-        padding: '10px 12px',
-        marginBottom: '20px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-      }}>
-        <div style={{
-          width: '8px', height: '8px', borderRadius: '50%',
-          background: '#188038',
-          boxShadow: '0 0 8px rgba(24,128,56,0.6)',
-          animation: 'pulseGlow 2s ease-in-out infinite',
-        }} />
-        <span style={{ fontSize: '12px', color: '#188038', fontWeight: '600' }}>AI Scout Engine Active</span>
-        <Sparkles size={13} color="#188038" style={{ marginLeft: 'auto' }} />
-      </div>
 
       {/* Nav */}
       <nav style={{ flex: 1 }}>
