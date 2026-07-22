@@ -54,8 +54,8 @@ function QRPreview({ url, color, label }: { url: string; color: string; label: s
 
       {/* Branding */}
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '13px', fontWeight: '700', color: '#F8FAFC', marginBottom: '4px' }}>Rahul Sharma · {label}</div>
-        <div style={{ fontSize: '11px', color: '#475569', fontFamily: 'JetBrains Mono, monospace', wordBreak: 'break-all', maxWidth: '220px' }}>{url}</div>
+        <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '4px' }}>Rahul Sharma · {label}</div>
+        <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', wordBreak: 'break-all', maxWidth: '220px' }}>{url}</div>
       </div>
 
       {/* Actions */}
@@ -73,12 +73,12 @@ function QRPreview({ url, color, label }: { url: string; color: string; label: s
 
 function TalentDashboardPreview() {
   return (
-    <div style={{ background: '#12121E', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '20px', padding: '24px', maxWidth: '420px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid rgba(99,102,241,0.1)' }}>
+    <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px', padding: '24px', maxWidth: '420px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '800', color: 'white' }}>RS</div>
         <div>
-          <div style={{ fontSize: '15px', fontWeight: '700', fontFamily: 'Space Grotesk' }}>Rahul Sharma</div>
-          <div style={{ fontSize: '11px', color: '#10B981' }}>✓ Optra Verified · VIT Vellore</div>
+          <div style={{ fontSize: '15px', fontWeight: '700', fontFamily: 'Space Grotesk', color: 'var(--text-primary)' }}>Rahul Sharma</div>
+          <div style={{ fontSize: '11px', color: 'var(--emerald)' }}>✓ Optra Verified · VIT Vellore</div>
         </div>
         <div style={{ marginLeft: 'auto', fontSize: '22px', fontWeight: '900', fontFamily: 'Space Grotesk', background: 'linear-gradient(135deg, #6366F1, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>782</div>
       </div>
@@ -90,10 +90,10 @@ function TalentDashboardPreview() {
           { label: 'Hackathon Wins', value: '2', sub: 'ETHIndia 2025 🏆', color: '#6366F1' },
           { label: 'Face Verified', value: '99.2%', sub: 'Liveness passed', color: '#06B6D4' },
         ].map(({ label, value, sub, color }) => (
-          <div key={label} style={{ background: 'rgba(18,18,30,0.8)', borderRadius: '10px', padding: '12px', border: '1px solid rgba(99,102,241,0.08)' }}>
+          <div key={label} style={{ background: 'var(--bg-secondary)', borderRadius: '10px', padding: '12px', border: '1px solid var(--border)' }}>
             <div style={{ fontSize: '18px', fontWeight: '800', color, fontFamily: 'Space Grotesk' }}>{value}</div>
-            <div style={{ fontSize: '11px', fontWeight: '600', color: '#94A3B8' }}>{label}</div>
-            <div style={{ fontSize: '10px', color: '#475569' }}>{sub}</div>
+            <div style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-secondary)' }}>{label}</div>
+            <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{sub}</div>
           </div>
         ))}
       </div>
@@ -102,12 +102,12 @@ function TalentDashboardPreview() {
         <div style={{ fontSize: '12px', color: '#475569', marginBottom: '8px', fontWeight: '600' }}>Top Skills</div>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           {['React', 'Node.js', 'Python', 'TypeScript', 'PostgreSQL'].map(s => (
-            <span key={s} style={{ fontSize: '11px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: '#818CF8', padding: '3px 10px', borderRadius: '20px' }}>{s}</span>
+            <span key={s} style={{ fontSize: '11px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--indigo)', padding: '3px 10px', borderRadius: '20px' }}>{s}</span>
           ))}
         </div>
       </div>
 
-      <div style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', borderRadius: '10px', padding: '10px 14px', fontSize: '11px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+      <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 14px', fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
         <Shield size={12} color="#10B981" /> All credentials verified via DigiLocker & AI face check
       </div>
     </div>
@@ -134,8 +134,8 @@ export default function QRPage() {
             onClick={() => setActiveType(type)}
             style={{
               padding: '20px', borderRadius: '16px', cursor: 'pointer',
-              background: activeType.id === type.id ? `${type.color}12` : 'rgba(18,18,30,0.6)',
-              border: `1px solid ${activeType.id === type.id ? `${type.color}44` : 'rgba(99,102,241,0.12)'}`,
+              background: activeType.id === type.id ? 'var(--bg-card)' : 'var(--bg-secondary)',
+              border: `1px solid ${activeType.id === type.id ? 'var(--border-bright)' : 'var(--border)'}`,
               transition: 'all 0.2s',
             }}>
             <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: `${type.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: type.color, marginBottom: '12px' }}>

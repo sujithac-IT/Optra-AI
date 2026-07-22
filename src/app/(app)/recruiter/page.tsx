@@ -10,9 +10,9 @@ import {
 function CandidateModal({ c, onClose }: { c: typeof mockCandidates[0]; onClose: () => void }) {
   const [hired, setHired] = useState(false);
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(10,10,15,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }} onClick={onClose}>
-      <div style={{ background: '#12121E', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '24px', padding: '36px', maxWidth: '580px', width: '100%', boxShadow: '0 0 60px rgba(99,102,241,0.2)', position: 'relative' }} onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(99,102,241,0.1)', border: 'none', borderRadius: '8px', color: '#94A3B8', cursor: 'pointer', padding: '6px', display: 'flex' }}><X size={18} /></button>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }} onClick={onClose}>
+      <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '24px', padding: '36px', maxWidth: '580px', width: '100%', boxShadow: '0 12px 40px rgba(0,0,0,0.1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--text-muted)', cursor: 'pointer', padding: '6px', display: 'flex' }}><X size={18} /></button>
 
         {/* Profile */}
         <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', alignItems: 'flex-start' }}>
@@ -21,14 +21,14 @@ function CandidateModal({ c, onClose }: { c: typeof mockCandidates[0]; onClose: 
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-              <h2 style={{ fontSize: '20px', fontWeight: '800', fontFamily: 'Space Grotesk' }}>{c.name}</h2>
+              <h2 style={{ fontSize: '20px', fontWeight: '800', fontFamily: 'Space Grotesk', color: 'var(--text-primary)' }}>{c.name}</h2>
               {c.verified && <div className="verified-badge"><CheckCircle size={11} /> Verified</div>}
             </div>
-            <div style={{ fontSize: '14px', color: '#64748B' }}>{c.college}</div>
+            <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{c.college}</div>
             <div style={{ display: 'flex', gap: '16px', marginTop: '8px' }}>
-              <span style={{ fontSize: '13px', color: '#94A3B8' }}>CGPA: <strong style={{ color: '#F8FAFC' }}>{c.cgpa}</strong></span>
-              <span style={{ fontSize: '13px', color: '#94A3B8' }}>Score: <strong style={{ color: '#6366F1' }}>{c.optraScore}</strong></span>
-              <span style={{ fontSize: '13px', color: '#94A3B8' }}>Match: <strong style={{ color: '#10B981' }}>{c.matchRole}%</strong></span>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>CGPA: <strong style={{ color: 'var(--text-primary)' }}>{c.cgpa}</strong></span>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Score: <strong style={{ color: 'var(--indigo)' }}>{c.optraScore}</strong></span>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Match: <strong style={{ color: 'var(--emerald)' }}>{c.matchRole}%</strong></span>
             </div>
           </div>
         </div>
@@ -40,10 +40,10 @@ function CandidateModal({ c, onClose }: { c: typeof mockCandidates[0]; onClose: 
             { label: 'GitHub Stars', value: c.githubStars, icon: '⭐', color: '#8B5CF6' },
             { label: 'Role Match', value: `${c.matchRole}%`, icon: '🎯', color: '#10B981' },
           ].map(({ label, value, icon, color }) => (
-            <div key={label} style={{ background: 'rgba(18,18,30,0.8)', borderRadius: '12px', padding: '14px', border: '1px solid rgba(99,102,241,0.1)', textAlign: 'center' }}>
+            <div key={label} style={{ background: 'var(--bg-secondary)', borderRadius: '12px', padding: '14px', border: '1px solid var(--border)', textAlign: 'center' }}>
               <div style={{ fontSize: '20px', marginBottom: '4px' }}>{icon}</div>
               <div style={{ fontSize: '20px', fontWeight: '800', color, fontFamily: 'Space Grotesk' }}>{value}</div>
-              <div style={{ fontSize: '11px', color: '#475569' }}>{label}</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{label}</div>
             </div>
           ))}
         </div>
@@ -53,17 +53,17 @@ function CandidateModal({ c, onClose }: { c: typeof mockCandidates[0]; onClose: 
           <div style={{ fontSize: '12px', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>Skills</div>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {c.skills.map(s => (
-              <span key={s} style={{ fontSize: '12px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: '#818CF8', padding: '4px 12px', borderRadius: '20px' }}>{s}</span>
+              <span key={s} style={{ fontSize: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--indigo)', padding: '4px 12px', borderRadius: '20px' }}>{s}</span>
             ))}
           </div>
         </div>
 
         {/* Verification */}
         <div style={{ background: c.verified ? 'rgba(16,185,129,0.06)' : 'rgba(245,158,11,0.06)', border: `1px solid ${c.verified ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}`, borderRadius: '12px', padding: '14px', marginBottom: '24px' }}>
-          <div style={{ fontSize: '13px', fontWeight: '600', color: c.verified ? '#10B981' : '#F59E0B', marginBottom: '6px' }}>
+          <div style={{ fontSize: '13px', fontWeight: '600', color: c.verified ? 'var(--emerald)' : 'var(--amber)', marginBottom: '6px' }}>
             {c.verified ? '✓ Optra Verified Profile' : '⚠️ Standard Profile (not verified)'}
           </div>
-          <div style={{ fontSize: '12px', color: '#64748B' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
             {c.verified ? 'DigiLocker academic credentials, AI face-verified identity, and anti-proxy assessment compliance confirmed.' : 'This candidate has not completed DigiLocker or face verification yet.'}
           </div>
         </div>
@@ -81,10 +81,10 @@ function CandidateModal({ c, onClose }: { c: typeof mockCandidates[0]; onClose: 
             }}>
             {hired ? <><CheckCircle size={16} />Interview Scheduled!</> : <><Zap size={16} />1-Click Schedule Interview</>}
           </button>
-          <button style={{ padding: '14px 16px', borderRadius: '12px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: '#818CF8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: '600' }}>
+          <button style={{ padding: '14px 16px', borderRadius: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--indigo)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: '600' }}>
             <Download size={15} /> Resume
           </button>
-          <button style={{ padding: '14px 16px', borderRadius: '12px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: '#818CF8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: '600' }}>
+          <button style={{ padding: '14px 16px', borderRadius: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--indigo)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: '600' }}>
             <MessageSquare size={15} />
           </button>
         </div>
@@ -117,7 +117,7 @@ export default function RecruiterPage() {
           <p style={{ fontSize: '14px', color: '#64748B' }}>Search verified candidates with AI skill graphs, CGPA proof, and anti-proxy assessments</p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <div style={{ padding: '10px 20px', borderRadius: '10px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.25)', color: '#818CF8', fontSize: '13px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ padding: '10px 20px', borderRadius: '10px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--indigo)', fontSize: '13px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Users size={15} /> {filtered.length} candidates
           </div>
         </div>
@@ -134,8 +134,8 @@ export default function RecruiterPage() {
           <div key={label} className="stat-card">
             <div style={{ fontSize: '22px', marginBottom: '6px' }}>{icon}</div>
             <div style={{ fontSize: '20px', fontWeight: '800', color, fontFamily: 'Space Grotesk' }}>{value}</div>
-            <div style={{ fontSize: '12px', fontWeight: '600', color: '#F8FAFC' }}>{label}</div>
-            <div style={{ fontSize: '11px', color: '#475569' }}>{sub}</div>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)' }}>{label}</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{sub}</div>
           </div>
         ))}
       </div>
@@ -148,7 +148,7 @@ export default function RecruiterPage() {
         </div>
 
         {/* Verified Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderRadius: '10px', background: verifiedOnly ? 'rgba(16,185,129,0.1)' : 'rgba(18,18,30,0.8)', border: `1px solid ${verifiedOnly ? 'rgba(16,185,129,0.3)' : 'rgba(99,102,241,0.2)'}`, cursor: 'pointer' }}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderRadius: '10px', background: verifiedOnly ? 'rgba(24,128,56,0.08)' : 'var(--bg-secondary)', border: `1px solid ${verifiedOnly ? 'rgba(24,128,56,0.3)' : 'var(--border)'}`, cursor: 'pointer' }}
           onClick={() => setVerifiedOnly(!verifiedOnly)}>
           <ShieldCheck size={15} color={verifiedOnly ? '#10B981' : '#475569'} />
           <span style={{ fontSize: '13px', color: verifiedOnly ? '#10B981' : '#64748B', fontWeight: '600' }}>Verified Only</span>
@@ -157,7 +157,7 @@ export default function RecruiterPage() {
           </div>
         </div>
 
-        <select value={minScore} onChange={e => setMinScore(Number(e.target.value))} style={{ background: 'rgba(18,18,30,0.8)', border: '1px solid rgba(99,102,241,0.2)', color: '#94A3B8', padding: '12px 16px', borderRadius: '10px', fontSize: '13px', cursor: 'pointer', outline: 'none' }}>
+        <select value={minScore} onChange={e => setMinScore(Number(e.target.value))} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-primary)', padding: '12px 16px', borderRadius: '10px', fontSize: '13px', cursor: 'pointer', outline: 'none' }}>
           <option value={0}>Min Score: Any</option>
           <option value={750}>Min Score: 750+</option>
           <option value={800}>Min Score: 800+</option>
@@ -168,7 +168,7 @@ export default function RecruiterPage() {
       {/* Candidates Table */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {/* Table Header */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr auto', gap: '16px', padding: '14px 24px', background: 'rgba(99,102,241,0.06)', borderBottom: '1px solid rgba(99,102,241,0.1)', fontSize: '11px', fontWeight: '700', color: '#475569', textTransform: 'uppercase', letterSpacing: '1px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr auto', gap: '16px', padding: '14px 24px', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
           <span>Candidate</span>
           <span>Optra Score</span>
           <span>CGPA</span>
@@ -181,10 +181,10 @@ export default function RecruiterPage() {
         {filtered.map((c, i) => (
           <div key={c.id} style={{
             display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr auto',
-            gap: '16px', padding: '16px 24px', borderBottom: '1px solid rgba(99,102,241,0.06)',
+            gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)',
             alignItems: 'center', transition: 'background 0.2s', cursor: 'pointer',
           }}
-            onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = 'rgba(99,102,241,0.04)'}
+            onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = 'var(--bg-secondary)'}
             onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = 'transparent'}
             onClick={() => setSelectedCandidate(c)}>
 
@@ -194,8 +194,8 @@ export default function RecruiterPage() {
                 {c.name.split(' ').map(n => n[0]).join('')}
               </div>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: '600' }}>{c.name}</div>
-                <div style={{ fontSize: '11px', color: '#64748B' }}>{c.college}</div>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>{c.name}</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{c.college}</div>
               </div>
             </div>
 
@@ -205,7 +205,7 @@ export default function RecruiterPage() {
             </div>
 
             {/* CGPA */}
-            <div style={{ fontSize: '14px', fontWeight: '600', color: '#F8FAFC' }}>{c.cgpa}</div>
+            <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)' }}>{c.cgpa}</div>
 
             {/* Match */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -240,7 +240,7 @@ export default function RecruiterPage() {
       </div>
 
       {/* Pricing Callout */}
-      <div style={{ marginTop: '24px', background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(6,182,212,0.08))', border: '1px solid rgba(99,102,241,0.25)', borderRadius: '20px', padding: '28px', display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
+      <div style={{ marginTop: '24px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '20px', padding: '28px', display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
         <div style={{ flex: 1, minWidth: '240px' }}>
           <div style={{ fontSize: '16px', fontWeight: '800', fontFamily: 'Space Grotesk', marginBottom: '6px' }}>Upgrade to Recruiter Pro</div>
           <div style={{ fontSize: '13px', color: '#64748B', lineHeight: '1.6' }}>

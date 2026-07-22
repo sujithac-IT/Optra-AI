@@ -1,0 +1,29 @@
+[
+  {
+    "id": "unstop-12345",
+    "title": "Global AI Hackathon 2026",
+    "organization": "Optra-AI Partners",
+    "type": "hackathon",
+    "tags": ["AI", "Machine Learning", "Python"],
+    "deadline": "2026-08-15T23:59:59Z",
+    "url": "https://unstop.com/hackathons/global-ai-12345"
+  },
+  {
+    "id": "unstop-67890",
+    "title": "Frontend Developers Challenge",
+    "organization": "WebTech Inc",
+    "type": "competition",
+    "tags": ["React", "Next.js", "TypeScript"],
+    "deadline": "2026-09-01T23:59:59Z",
+    "url": "https://unstop.com/competitions/frontend-67890"
+  },
+  {
+    "id": "unstop-99999",
+    "title": "Summer Internship 2027",
+    "organization": "Big Tech Corp",
+    "type": "internship",
+    "tags": ["Software Engineering", "Java", "Backend"],
+    "deadline": "2026-12-01T23:59:59Z",
+    "url": "https://unstop.com/internships/summer-2027-99999"
+  }
+]

@@ -49,8 +49,8 @@ function LiveLog() {
       {logs.map((log, i) => (
         <div key={`${i}-${counter}`} style={{
           display: 'flex', gap: '12px', padding: '10px 12px', borderRadius: '10px',
-          background: 'rgba(18,18,30,0.6)',
-          border: `1px solid ${log.type === 'new' ? 'rgba(16,185,129,0.15)' : log.type === 'alert' ? 'rgba(245,158,11,0.15)' : 'rgba(99,102,241,0.1)'}`,
+          background: 'var(--bg-card)',
+          border: `1px solid var(--border)`,
           animation: i === 0 ? 'slideIn 0.4s ease' : 'none',
         }}>
           <div style={{ flexShrink: 0, marginTop: '4px' }}>
@@ -61,10 +61,10 @@ function LiveLog() {
             }} />
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5' }}>{log.event}</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>{log.event}</div>
             <div style={{ display: 'flex', gap: '12px', marginTop: '4px' }}>
-              <span style={{ fontSize: '10px', color: '#475569' }}>{log.source}</span>
-              <span style={{ fontSize: '10px', color: '#475569' }}>{log.time}</span>
+              <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{log.source}</span>
+              <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{log.time}</span>
               {log.matchedStudents > 0 && (
                 <span style={{ fontSize: '10px', color: '#6366F1' }}>→ {log.matchedStudents} students matched</span>
               )}
@@ -114,12 +114,12 @@ export default function ScoutPage() {
       </div>
 
       {/* Status Bar */}
-      <div style={{ background: running ? 'rgba(16,185,129,0.06)' : 'rgba(245,158,11,0.06)', border: `1px solid ${running ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}`, borderRadius: '14px', padding: '16px 20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+      <div style={{ background: running ? 'var(--success-alpha)' : 'var(--warning-alpha)', border: `1px solid ${running ? 'var(--success-border)' : 'var(--warning-border)'}`, borderRadius: '14px', padding: '16px 20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: running ? '#10B981' : '#F59E0B', boxShadow: running ? '0 0 8px rgba(16,185,129,0.8)' : 'none', animation: running ? 'pulseGlow 1.5s infinite' : 'none' }} />
-          <span style={{ fontSize: '13px', fontWeight: '700', color: running ? '#10B981' : '#F59E0B' }}>Scout {running ? 'Running' : 'Paused'}</span>
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: running ? 'var(--success)' : 'var(--warning)', boxShadow: running ? '0 0 8px var(--success-shadow)' : 'none', animation: running ? 'pulseGlow 1.5s infinite' : 'none' }} />
+          <span style={{ fontSize: '13px', fontWeight: '700', color: running ? 'var(--success)' : 'var(--warning)' }}>Scout {running ? 'Running' : 'Paused'}</span>
         </div>
-        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
           {[
             { label: 'Sources active', value: '6/8' },
             { label: 'Found today', value: '111' },
@@ -127,8 +127,8 @@ export default function ScoutPage() {
             { label: 'Last scan', value: '47s ago' },
           ].map(({ label, value }) => (
             <div key={label} style={{ fontSize: '13px' }}>
-              <span style={{ color: '#475569' }}>{label}: </span>
-              <span style={{ color: '#F8FAFC', fontWeight: '700' }}>{value}</span>
+              <span style={{ color: 'var(--text-muted)' }}>{label}: </span>
+              <span style={{ color: 'var(--text-primary)', fontWeight: '700' }}>{value}</span>
             </div>
           ))}
         </div>
@@ -152,13 +152,13 @@ export default function ScoutPage() {
           <div style={{ fontSize: '15px', fontWeight: '700', fontFamily: 'Space Grotesk', marginBottom: '16px' }}>Data Sources</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {sources.map(src => (
-              <div key={src.name} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '10px', background: 'rgba(18,18,30,0.5)', border: `1px solid ${src.active ? 'rgba(99,102,241,0.12)' : 'rgba(99,102,241,0.05)'}`, opacity: src.active ? 1 : 0.5 }}>
+              <div key={src.name} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '10px', background: 'var(--bg-secondary)', border: `1px solid var(--border)`, opacity: src.active ? 1 : 0.5 }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: `${src.color}18`, color: src.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '700', flexShrink: 0 }}>
                   {src.icon}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: '13px', fontWeight: '600' }}>{src.name}</div>
-                  <div style={{ fontSize: '11px', color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{src.desc}</div>
+                  <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)' }}>{src.name}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{src.desc}</div>
                 </div>
                 <div style={{ fontSize: '12px', fontWeight: '700', color: src.color, flexShrink: 0 }}>+{src.found}</div>
                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: src.active ? '#10B981' : '#475569', flexShrink: 0 }} />
@@ -169,7 +169,7 @@ export default function ScoutPage() {
       </div>
 
       {/* WhatsApp Alerts */}
-      <div className="card" style={{ background: 'linear-gradient(135deg, rgba(37,211,102,0.08), rgba(18,18,30,0.8))' }}>
+      <div className="card" style={{ background: 'linear-gradient(135deg, rgba(37,211,102,0.06), rgba(24,128,56,0.03))' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
           <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(37,211,102,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <MessageCircle size={22} color="#25D366" />
@@ -206,17 +206,17 @@ export default function ScoutPage() {
           </div>
           <div>
             <label style={{ fontSize: '12px', color: '#64748B', marginBottom: '6px', display: 'block' }}>Minimum Match Score to Alert</label>
-            <select style={{ background: 'rgba(18,18,30,0.8)', border: '1px solid rgba(99,102,241,0.2)', color: '#94A3B8', padding: '12px 16px', borderRadius: '10px', fontSize: '14px', cursor: 'pointer', outline: 'none', width: '100%' }}>
+            <select style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text-primary)', padding: '12px 16px', borderRadius: '10px', fontSize: '14px', cursor: 'pointer', outline: 'none', width: '100%' }}>
               <option>75% and above</option><option>80% and above</option><option>90% and above</option>
             </select>
           </div>
         </div>
 
         {/* Sample WhatsApp Message */}
-        <div style={{ marginTop: '16px', background: 'rgba(18,18,30,0.6)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(37,211,102,0.15)' }}>
+        <div style={{ marginTop: '16px', background: 'var(--bg-secondary)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(37,211,102,0.15)' }}>
           <div style={{ fontSize: '11px', color: '#475569', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700' }}>Preview Message</div>
           <div style={{ display: 'inline-block', background: 'rgba(37,211,102,0.1)', borderRadius: '12px 12px 2px 12px', padding: '12px 16px', maxWidth: '80%' }}>
-            <div style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.6' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
               🚀 <strong style={{ color: '#25D366' }}>Optra Scout found a match for you!</strong><br />
               <strong style={{ color: '#F8FAFC' }}>Full-Stack Intern @ Sarvam AI</strong><br />
               💰 ₹40,000/mo · Remote OK · 94% match<br />

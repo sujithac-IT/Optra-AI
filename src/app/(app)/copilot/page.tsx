@@ -181,8 +181,8 @@ export default function CopilotPage() {
                     onClick={() => setTargetJob(opp)}
                     style={{
                       padding: '12px', borderRadius: '10px', cursor: 'pointer',
-                      background: targetJob.id === opp.id ? 'rgba(99,102,241,0.15)' : 'rgba(18,18,30,0.6)',
-                      border: `1px solid ${targetJob.id === opp.id ? 'rgba(99,102,241,0.4)' : 'rgba(99,102,241,0.08)'}`,
+                      background: targetJob.id === opp.id ? 'rgba(26,115,232,0.1)' : 'var(--bg-secondary)',
+                      border: `1px solid ${targetJob.id === opp.id ? 'rgba(26,115,232,0.4)' : 'var(--border)'}`,
                       transition: 'all 0.2s',
                     }}>
                     <div style={{ fontSize: '13px', fontWeight: '600' }}>{opp.title}</div>
@@ -327,7 +327,7 @@ export default function CopilotPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
               {roadmapDays.map((day, i) => (
-                <div key={i} style={{ background: 'rgba(18,18,30,0.8)', border: '1px solid rgba(99,102,241,0.15)', borderRadius: '14px', padding: '20px', borderTop: `3px solid ${['#6366F1','#06B6D4','#10B981'][i]}` }}>
+                <div key={i} style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '14px', padding: '20px', borderTop: `3px solid ${['var(--indigo)','var(--cyan)','var(--emerald)'][i]}` }}>
                   <div style={{ fontSize: '11px', color: ['#6366F1','#06B6D4','#10B981'][i], fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>{day.day}</div>
                   <div style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px' }}>{day.focus}</div>
                   {day.tasks.map((task, j) => (
@@ -336,7 +336,7 @@ export default function CopilotPage() {
                       {task}
                     </div>
                   ))}
-                  <div style={{ marginTop: '12px', fontSize: '11px', color: '#475569', background: 'rgba(99,102,241,0.06)', padding: '6px 10px', borderRadius: '6px' }}>
+                  <div style={{ marginTop: '12px', fontSize: '11px', color: 'var(--text-muted)', background: 'var(--bg-card)', padding: '6px 10px', borderRadius: '6px' }}>
                     📚 {day.resource}
                   </div>
                 </div>
@@ -360,7 +360,7 @@ export default function CopilotPage() {
               </div>
             </div>
             {showResume && (
-              <pre style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#94A3B8', lineHeight: '1.8', background: 'rgba(18,18,30,0.8)', padding: '20px', borderRadius: '10px', border: '1px solid rgba(99,102,241,0.1)', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
+              <pre style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.8', background: 'var(--bg-secondary)', padding: '20px', borderRadius: '10px', border: '1px solid var(--border)', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
                 {atsResumeSample}
               </pre>
             )}
