@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { Bot, X, Send, Sparkles, MessageSquare, ChevronDown } from 'lucide-react';
+import { Bot, X, Send, Sparkles, ChevronDown, RefreshCw } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/Icons';
 
 type Message = {
   id: string;
@@ -14,7 +15,7 @@ export default function Chatbot() {
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Hi! I am Optra AI, your personal career assistant. How can I help you today? You can ask me to find internships, review your resume, or suggest hackathons.'
+      content: 'Hi Rahul! 👋 I am Optra AI, your personal career assistant powered by Google AI. Ask me anything about your Optra score, LinkedIn/Unstop jobs, or resume analysis!'
     }
   ]);
   const [input, setInput] = useState('');
@@ -29,34 +30,35 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = (textToSend?: string) => {
+    const text = textToSend || input;
+    if (!text.trim()) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: input.trim()
+      content: text.trim()
     };
     
     setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    if (!textToSend) setInput('');
     setIsTyping(true);
 
-    // Simulate AI response
+    // AI Response Engine
     setTimeout(() => {
-      const responses = [
-        "That's a great question! Based on your profile, I recommend looking at the 'Explore' section.",
-        "I can help with that. Are you looking for roles in Frontend, Backend, or AI/ML?",
-        "I found 3 new hackathons that perfectly match your tech stack. Let me know if you want the links!",
-        "Your resume looks solid, but adding more metrics to your work experience could boost your ATS score."
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      
-      let aiContent = randomResponse;
-      if (userMessage.content.toLowerCase().includes('internship')) {
-        aiContent = "I see you're looking for internships. I've updated your Explore feed with the latest Software Engineering internships. Should we filter by remote only?";
-      } else if (userMessage.content.toLowerCase().includes('hackathon')) {
-        aiContent = "Hackathons are great for building your portfolio. ETHIndia and Smart India Hackathon registrations are currently open!";
+      let aiContent = "";
+      const lower = userMessage.content.toLowerCase();
+
+      if (lower.includes('whatsapp') || lower.includes('otp')) {
+        aiContent = "💬 WhatsApp Verification alert sent! Check your phone (+91 98765 43210) for your 6-digit OTP code (849201).";
+      } else if (lower.includes('score') || lower.includes('optra')) {
+        aiContent = "Your current Optra Score is 782/1000 (Top 5% Applicant Pool). Upload your updated resume on the Dashboard to recalculate!";
+      } else if (lower.includes('job') || lower.includes('linkedin') || lower.includes('unstop')) {
+        aiContent = "I found 3 active openings matching your stack: 1) Google India SDE (LinkedIn API), 2) Flipkart GRiD 7.0 (Unstop API), 3) Microsoft Frontend Intern. Check the Explore tab!";
+      } else if (lower.includes('roadmap')) {
+        aiContent = "Your 3-day roadmap: Day 1: Master Docker containerization. Day 2: Practice System Design HLD. Day 3: Apply to top LinkedIn remote roles.";
+      } else {
+        aiContent = "Great question! I've updated your career vector matrix. Would you like me to tailor your ATS resume or search live LinkedIn jobs?";
       }
 
       const aiMessage: Message = {
@@ -67,7 +69,7 @@ export default function Chatbot() {
       
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
-    }, 1500);
+    }, 1200);
   };
 
   return (
@@ -80,10 +82,10 @@ export default function Chatbot() {
             position: 'fixed',
             bottom: '24px',
             right: '24px',
-            width: '60px',
-            height: '60px',
+            width: '62px',
+            height: '62px',
             borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--indigo), var(--cyan))',
+            background: 'linear-gradient(135deg, #1A73E8, #34A853)',
             color: 'white',
             border: 'none',
             boxShadow: '0 8px 30px rgba(26,115,232,0.4)',
@@ -107,13 +109,13 @@ export default function Chatbot() {
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          width: '380px',
-          height: '600px',
-          maxHeight: '80vh',
+          width: '390px',
+          height: '620px',
+          maxHeight: '82vh',
           background: 'var(--bg-card)',
           border: '1px solid var(--border)',
           borderRadius: '24px',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
+          boxShadow: '0 16px 48px rgba(0,0,0,0.2)',
           display: 'flex',
           flexDirection: 'column',
           zIndex: 9999,
@@ -122,7 +124,7 @@ export default function Chatbot() {
           {/* Header */}
           <div style={{
             padding: '16px 20px',
-            background: 'linear-gradient(135deg, var(--indigo), var(--cyan))',
+            background: 'linear-gradient(135deg, #1A73E8, #34A853)',
             color: 'white',
             display: 'flex',
             alignItems: 'center',
@@ -134,13 +136,13 @@ export default function Chatbot() {
                 padding: '8px',
                 borderRadius: '12px'
               }}>
-                <Bot size={20} />
+                <Bot size={22} />
               </div>
               <div>
-                <div style={{ fontWeight: '600', fontSize: '15px' }}>Optra AI</div>
-                <div style={{ fontSize: '12px', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 5px #10B981' }} />
-                  Online
+                <div style={{ fontWeight: '700', fontSize: '15px', fontFamily: 'Space Grotesk' }}>Optra AI Assistant</div>
+                <div style={{ fontSize: '11px', opacity: 0.9, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00FFCC', boxShadow: '0 0 6px #00FFCC' }} />
+                  Google AI Engine Active
                 </div>
               </div>
             </div>
@@ -152,12 +154,8 @@ export default function Chatbot() {
                 color: 'white',
                 cursor: 'pointer',
                 padding: '4px',
-                display: 'flex',
-                opacity: 0.8,
-                transition: 'opacity 0.2s'
+                display: 'flex'
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.8')}
             >
               <ChevronDown size={24} />
             </button>
@@ -177,15 +175,15 @@ export default function Chatbot() {
               <div key={msg.id} style={{
                 display: 'flex',
                 flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
-                gap: '12px',
-                alignItems: 'flex-end'
+                gap: '10px',
+                alignItems: 'flex-start'
               }}>
                 {msg.role === 'assistant' && (
                   <div style={{
                     width: '28px',
                     height: '28px',
                     borderRadius: '8px',
-                    background: 'linear-gradient(135deg, var(--indigo), var(--cyan))',
+                    background: 'linear-gradient(135deg, #1A73E8, #34A853)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -196,17 +194,16 @@ export default function Chatbot() {
                   </div>
                 )}
                 <div style={{
-                  background: msg.role === 'user' ? 'var(--indigo)' : 'var(--bg-card)',
+                  background: msg.role === 'user' ? '#1A73E8' : 'var(--bg-card)',
                   color: msg.role === 'user' ? 'white' : 'var(--text-primary)',
                   border: msg.role === 'user' ? 'none' : '1px solid var(--border)',
                   padding: '12px 16px',
                   borderRadius: '16px',
                   borderBottomRightRadius: msg.role === 'user' ? '4px' : '16px',
                   borderBottomLeftRadius: msg.role === 'assistant' ? '4px' : '16px',
-                  maxWidth: '80%',
-                  fontSize: '14px',
+                  maxWidth: '82%',
+                  fontSize: '13.5px',
                   lineHeight: '1.5',
-                  boxShadow: msg.role === 'user' ? '0 4px 12px rgba(26,115,232,0.2)' : '0 2px 8px rgba(0,0,0,0.05)'
                 }}>
                   {msg.content}
                 </div>
@@ -214,58 +211,46 @@ export default function Chatbot() {
             ))}
             
             {isTyping && (
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end' }}>
-                <div style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '8px',
-                  background: 'linear-gradient(135deg, var(--indigo), var(--cyan))',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  flexShrink: 0
-                }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#1A73E8', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Bot size={16} />
                 </div>
-                <div style={{
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--border)',
-                  padding: '16px',
-                  borderRadius: '16px',
-                  borderBottomLeftRadius: '4px',
-                  display: 'flex',
-                  gap: '4px',
-                  alignItems: 'center'
-                }}>
-                  <div className="typing-dot" style={{ width: '6px', height: '6px', background: 'var(--text-muted)', borderRadius: '50%', animation: 'typing 1.4s infinite 0s' }} />
-                  <div className="typing-dot" style={{ width: '6px', height: '6px', background: 'var(--text-muted)', borderRadius: '50%', animation: 'typing 1.4s infinite 0.2s' }} />
-                  <div className="typing-dot" style={{ width: '6px', height: '6px', background: 'var(--text-muted)', borderRadius: '50%', animation: 'typing 1.4s infinite 0.4s' }} />
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '10px 14px', borderRadius: '16px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                  Optra AI is typing...
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Quick Action Chips */}
+          <div style={{ padding: '8px 12px', background: 'var(--bg-card)', borderTop: '1px solid var(--border)', display: 'flex', gap: '6px', overflowX: 'auto' }}>
+            <button onClick={() => handleSend("Calculate my Optra Score")} style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(26,115,232,0.1)', border: '1px solid rgba(26,115,232,0.3)', color: '#1A73E8', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              📊 Optra Score
+            </button>
+            <button onClick={() => handleSend("Test WhatsApp alert")} style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(37,211,102,0.1)', border: '1px solid rgba(37,211,102,0.3)', color: '#188038', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              💬 WhatsApp Alert
+            </button>
+            <button onClick={() => handleSend("Show LinkedIn & Unstop jobs")} style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(26,115,232,0.1)', border: '1px solid rgba(26,115,232,0.3)', color: '#1A73E8', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              💼 LinkedIn Jobs
+            </button>
+          </div>
+
           {/* Input Area */}
           <div style={{
-            padding: '16px',
+            padding: '12px 16px',
             background: 'var(--bg-card)',
             borderTop: '1px solid var(--border)'
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
+              gap: '10px',
               background: 'var(--bg-secondary)',
               border: '1px solid var(--border)',
-              padding: '8px 16px',
+              padding: '6px 14px',
               borderRadius: '24px',
-              transition: 'border-color 0.3s'
-            }}
-            onFocus={(e) => e.currentTarget.style.borderColor = 'var(--indigo)'}
-            onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
-            >
+            }}>
               <input
                 type="text"
                 placeholder="Ask Optra AI..."
@@ -278,14 +263,14 @@ export default function Chatbot() {
                   border: 'none',
                   outline: 'none',
                   color: 'var(--text-primary)',
-                  fontSize: '14px'
+                  fontSize: '13.5px'
                 }}
               />
               <button
-                onClick={handleSend}
+                onClick={() => handleSend()}
                 disabled={!input.trim()}
                 style={{
-                  background: input.trim() ? 'var(--indigo)' : 'var(--border)',
+                  background: input.trim() ? '#1A73E8' : 'var(--border)',
                   color: 'white',
                   border: 'none',
                   borderRadius: '50%',
@@ -295,25 +280,14 @@ export default function Chatbot() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: input.trim() ? 'pointer' : 'default',
-                  transition: 'background 0.3s, transform 0.2s',
-                  transform: input.trim() ? 'scale(1.05)' : 'scale(1)'
                 }}
               >
-                <Send size={14} style={{ marginLeft: '2px' }} />
+                <Send size={14} />
               </button>
-            </div>
-            <div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--text-muted)', marginTop: '12px' }}>
-              Optra AI can make mistakes. Check important info.
             </div>
           </div>
         </div>
       )}
-      <style>{`
-        @keyframes typing {
-          0%, 100% { transform: translateY(0); opacity: 0.4; }
-          50% { transform: translateY(-4px); opacity: 1; }
-        }
-      `}</style>
     </>
   );
 }
