@@ -36,6 +36,8 @@ Optra AI uses Google's AI technologies to analyze a student's profile, skills, a
 
 **AI**
 - Google Gemini API
+- OpenClaude
+- Antigravity 
 
 **Authentication & Deployment**
 - Firebase Authentication
