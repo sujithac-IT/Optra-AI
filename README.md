@@ -62,11 +62,9 @@ Optra AI uses Google's AI technologies to analyze a student's profile, skills, a
 ## Team
 
 - Sujitha Chandrasekharan
-- Rithikaa
-
+- Rithikaa V
 ---
-
-Developed as part of the **Google Gen AI Academy APAC – Meet the Builders** initiative.
+Built for Google Gen AI Academy APAC – Meet the Builders.
 
 First, run the development server:
 
